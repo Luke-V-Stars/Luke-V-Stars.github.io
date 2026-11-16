@@ -9,26 +9,52 @@
   3. Refresh your browser to see changes.
 
   Tip: Search for "REPLACE" to find every spot you need to edit.
+
+  Handy classes (defined in styles.css):
+    class="glass"   → turns an element into a frosted-glass panel
+    class="reveal"  → makes an element fade in when you scroll to it
   ============================================================
 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#204049" />
 
   <!-- REPLACE: This shows in the browser tab -->
   <title>Luke Vang — Portfolio</title>
 
+  <!-- The little "LV" icon in the browser tab -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Heading font (Space Grotesk) from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
   <!-- This links your styles.css file to this page -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- This makes sections appear as you scroll -->
+  <script src="script.js" defer></script>
 </head>
 
 <body>
 
+  <!-- Blurry color blobs behind the page (decoration only) -->
+  <div class="backdrop" aria-hidden="true">
+    <div class="blob blob-seafoam"></div>
+    <div class="blob blob-butter"></div>
+    <div class="blob blob-fog"></div>
+    <div class="blob blob-driftwood"></div>
+  </div>
+
   <!-- ===================== NAVIGATION ===================== -->
-  <nav class="navbar">
-    <!-- REPLACE: your name or a logo/initials -->
-    <a href="#top" class="nav-logo">LV</a>
+  <nav class="navbar glass">
+    <!-- The LV logo (same image as the browser-tab icon) -->
+    <a href="#top" class="nav-logo" aria-label="Luke Vang — back to top">
+      <img src="favicon.svg" alt="" width="38" height="38" />
+    </a>
 
     <!-- These links jump to sections further down the page -->
     <div class="nav-links">
@@ -41,48 +67,52 @@
   <!-- ===================== HERO / INTRO ===================== -->
   <header id="top" class="hero">
     <!-- REPLACE: your name -->
-    <h1>Luke Vang
-    </h1>
+    <h1>Luke Vang</h1>
 
     <!-- REPLACE: one sentence about who you are -->
     <p class="tagline">I'm a tech enthusiast looking to strengthen others skills within the technology industry by giving insight on the latest trends and innovations.
     </p>
 
-    <a href="#projects" class="button">See My Work</a>
+    <div class="hero-buttons">
+      <a href="#projects" class="button">See My Work</a>
+      <a href="#contact" class="button button-glass glass">Get In Touch</a>
+    </div>
   </header>
 
   <!-- ===================== ABOUT ===================== -->
   <section id="about" class="section">
-    <h2>About Me</h2>
-    <!-- REPLACE: 2-3 sentences about your background, goals, and what you're learning -->
-    <p>
-     I am a technology-focused professional with experience building strong relationships with stakeholders, teams, customers, and clients while fostering collaboration and team success. My background includes leadership roles where I coordinated efforts, solved problems, and helped drive positive outcomes in fast-paced environments. I have hands-on experience with HTML, JavaScript, and modern technology tools, along with a strong passion for learning and innovation. As an avid user of AI, I leverage emerging technologies to improve efficiency, enhance decision-making, and support business objectives. I am excited to combine my technical skills, leadership experience, and relationship-building abilities to create meaningful impact within the tech ecosystem.
-    </p>
+    <h2 class="reveal">About Me</h2>
 
-    <h3>Skills</h3>
-    <!-- REPLACE: add or remove skills as a simple list -->
-    <ul class="skills-list">
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>JavaScript</li>
-      <li>Git &amp; GitHub</li>
-      <li>Team Collaboration</li>
-      <li>Web Development</li>
-      <li>Problem Solving</li>
-    </ul>
+    <div class="panel glass reveal">
+      <!-- REPLACE: 2-3 sentences about your background, goals, and what you're learning -->
+      <p>
+       I am a technology-focused professional with experience building strong relationships with stakeholders, teams, customers, and clients while fostering collaboration and team success. My background includes leadership roles where I coordinated efforts, solved problems, and helped drive positive outcomes in fast-paced environments. I have hands-on experience with HTML, JavaScript, and modern technology tools, along with a strong passion for learning and innovation. As an avid user of AI, I leverage emerging technologies to improve efficiency, enhance decision-making, and support business objectives. I am excited to combine my technical skills, leadership experience, and relationship-building abilities to create meaningful impact within the tech ecosystem.
+      </p>
+
+      <h3>Skills</h3>
+      <!-- REPLACE: add or remove skills as a simple list -->
+      <ul class="skills-list">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+        <li>Git &amp; GitHub</li>
+        <li>Team Collaboration</li>
+        <li>Web Development</li>
+        <li>Problem Solving</li>
+      </ul>
+    </div>
   </section>
 
   <!-- ===================== PROJECTS ===================== -->
   <section id="projects" class="section">
-    <h2>Projects</h2>
+    <h2 class="reveal">Projects</h2>
 
     <div class="project-grid">
 
       <!-- PROJECT CARD 1 — copy this whole block to add more projects -->
-      <article class="project-card">
+      <article class="project-card glass reveal">
         <!-- REPLACE: project name -->
-        <h3>RFP Project
-        </h3>
+        <h3>RFP Project</h3>
         <!-- REPLACE: 1-2 sentences on what it is and what you built -->
         <p>Working on a comprehensive RFP project for an SMP 400 company that involes over 70 thousand tickets in Service Now to produce an easy and intuitive tool. </p>
         <!-- REPLACE: link to the live site or GitHub repo -->
@@ -90,15 +120,15 @@
       </article>
 
       <!-- PROJECT CARD 2 -->
-      <article class="project-card">
+      <article class="project-card glass reveal">
         <h3>Spotify Playlist 3d Simulation</h3>
         <p>A 3D simulation of Spotify playlists using Three.js.</p>
         <a href="[https://github.com/yourusername/project]" class="project-link">View Project</a>
       </article>
 
       <!-- PROJECT CARD 3 -->
-      <article class="project-card">
-        <h3>NFL & NBA Sample Game Simulator</h3>
+      <article class="project-card glass reveal">
+        <h3>NFL &amp; NBA Sample Game Simulator</h3>
         <p>Simulates games up to 50 thousand times based on real-world statistics and algorithms to predict outcomes.</p>
         <a href="[https://github.com/yourusername/project]" class="project-link">View Project</a>
       </article>
@@ -108,17 +138,20 @@
 
   <!-- ===================== CONTACT ===================== -->
   <section id="contact" class="section">
-    <h2>Get In Touch</h2>
-    <p>Want to work together or just say hi? Reach out.
-      Please...
-    </p>
+    <h2 class="reveal">Get In Touch</h2>
 
-    <ul class="contact-list">
-      <!-- REPLACE: your real links. Delete any you don't use. -->
-      <li><a href="[mailto:\vang.luke25@gmail.com">Email</a></li>
-      <li><a href="[https://github.com/Luke-V-Stars]">GitHub</a></li>
-      <li><a href="[https://linkedin.com/in/Luke Vang]">LinkedIn</a></li>
-    </ul>
+    <div class="panel glass reveal">
+      <p>Want to work together or just say hi? Reach out.
+        Please...
+      </p>
+
+      <ul class="contact-list">
+        <!-- REPLACE: your real links. Delete any you don't use. -->
+        <li><a href="mailto:vang.luke25@gmail.com">Email</a></li>
+        <li><a href="https://github.com/Luke-V-Stars" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/luke-vang-a96a45433/" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </div>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
