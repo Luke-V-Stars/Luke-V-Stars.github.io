@@ -38,7 +38,7 @@ Claude Code reads it automatically at the start of each session, so decisions an
 
 - [ ] Project links still point to the placeholder `[https://github.com/yourusername/project]`.
 - [x] Contact links (Email, GitHub, LinkedIn) fixed — 2026-11-15.
-- [ ] Typos: "involes" → "involves"; "others skills" → "others' skills"; confirm "SMP 400" (S&P 400?).
+- [x] Typos fixed — 2026-11-15: "involes", "others' skills", "SMP 400" → "S&P 400" (assumed; confirm with Luke), "Service Now" → "ServiceNow", "3d" → "3D".
 - [ ] Contact blurb ends with "Please..." — replace with a real call to action.
 - [ ] The About paragraph is long; split it into 2–3 shorter paragraphs or a short intro plus bullets.
 
