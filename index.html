@@ -10,9 +10,11 @@
 
   Tip: Search for "REPLACE" to find every spot you need to edit.
 
-  Handy classes (defined in styles.css):
-    class="glass"   → turns an element into a frosted-glass panel
-    class="reveal"  → makes an element fade in when you scroll to it
+  Handy extras:
+    class="glass"      turns an element into a frosted-glass panel
+    class="reveal"     makes an element fade in when you scroll to it
+    data-flap="TEXT"   turns an element into a row of split-flap tiles
+                       (separate several phrases with | to rotate them)
   ============================================================
 -->
 <html lang="en">
@@ -22,7 +24,7 @@
   <meta name="theme-color" content="#204049" />
 
   <!-- REPLACE: This shows in the browser tab -->
-  <title>Luke Vang — Portfolio</title>
+  <title>Luke Vang | Portfolio</title>
 
   <!-- The little "LV" icon in the browser tab -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -50,11 +52,9 @@
   </div>
 
   <!-- ===================== NAVIGATION ===================== -->
-  <nav class="navbar glass">
-    <!-- The LV logo (same image as the browser-tab icon) -->
-    <a href="#top" class="nav-logo" aria-label="Luke Vang — back to top">
-      <img src="favicon.svg" alt="" width="38" height="38" />
-    </a>
+  <nav class="navbar">
+    <!-- REPLACE: your initials -->
+    <a href="#top" class="nav-logo" aria-label="Luke Vang, back to top">LV</a>
 
     <!-- These links jump to sections further down the page -->
     <div class="nav-links">
@@ -66,8 +66,33 @@
 
   <!-- ===================== HERO / INTRO ===================== -->
   <header id="top" class="hero">
-    <!-- REPLACE: your name -->
-    <h1>Luke Vang</h1>
+
+    <!--
+      YOUR PHOTO
+      1. Save a photo of yourself in the "images" folder, named profile.jpg
+         (a portrait/vertical photo works best).
+      2. That's it. The photo replaces the "Your photo here" box automatically.
+      Using a .png instead? Change profile.jpg to profile.png on the <img> line below.
+    -->
+    <figure class="hero-photo">
+      <!-- This placeholder shows until images/profile.jpg exists -->
+      <div class="hero-photo-placeholder">
+        <svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true">
+          <circle cx="32" cy="23" r="12" fill="currentColor" />
+          <path d="M8 60c0-14 10.5-22 24-22s24 8 24 22z" fill="currentColor" />
+        </svg>
+        <span>Your photo here</span>
+      </div>
+      <img src="images/profile.jpg" alt="Portrait of Luke Vang" onerror="this.remove()" />
+    </figure>
+
+    <div class="hero-text">
+    <!-- REPLACE: your name (change it in BOTH places on this line) -->
+    <h1 class="hero-name" data-flap="Luke Vang">Luke Vang</h1>
+
+    <!-- REPLACE: who you are. The board flips through each phrase between the | marks.
+         Keep each phrase to about 15 characters so it fits on a phone. -->
+    <p class="hero-role" data-flap="Tech Enthusiast|AI Power User|Team Leader|Web Developer">Tech Enthusiast</p>
 
     <!-- REPLACE: one sentence about who you are -->
     <p class="tagline">I'm a tech enthusiast looking to strengthen others' skills within the technology industry by giving insight on the latest trends and innovations.
@@ -75,31 +100,36 @@
 
     <div class="hero-buttons">
       <a href="#projects" class="button">See My Work</a>
-      <a href="#contact" class="button button-glass glass">Get In Touch</a>
+      <a href="#contact" class="button button-outline">Get In Touch</a>
     </div>
+    </div><!-- end of hero-text -->
+
   </header>
 
   <!-- ===================== ABOUT ===================== -->
   <section id="about" class="section">
     <h2 class="reveal">About Me</h2>
 
-    <div class="panel glass reveal">
+    <!-- Two columns: your story on the left, your skills on the right -->
+    <div class="about-grid reveal">
       <!-- REPLACE: 2-3 sentences about your background, goals, and what you're learning -->
       <p>
        I am a technology-focused professional with experience building strong relationships with stakeholders, teams, customers, and clients while fostering collaboration and team success. My background includes leadership roles where I coordinated efforts, solved problems, and helped drive positive outcomes in fast-paced environments. I have hands-on experience with HTML, JavaScript, and modern technology tools, along with a strong passion for learning and innovation. As an avid user of AI, I leverage emerging technologies to improve efficiency, enhance decision-making, and support business objectives. I am excited to combine my technical skills, leadership experience, and relationship-building abilities to create meaningful impact within the tech ecosystem.
       </p>
 
-      <h3>Skills</h3>
-      <!-- REPLACE: add or remove skills as a simple list -->
-      <ul class="skills-list">
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-        <li>Git &amp; GitHub</li>
-        <li>Team Collaboration</li>
-        <li>Web Development</li>
-        <li>Problem Solving</li>
-      </ul>
+      <div>
+        <h3>Skills</h3>
+        <!-- REPLACE: add or remove skills as a simple list -->
+        <ul class="skills-list">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>Git &amp; GitHub</li>
+          <li>Team Collaboration</li>
+          <li>Web Development</li>
+          <li>Problem Solving</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -109,7 +139,7 @@
 
     <div class="project-grid">
 
-      <!-- PROJECT CARD 1 — copy this whole block to add more projects -->
+      <!-- PROJECT CARD 1: copy this whole block to add more projects -->
       <article class="project-card glass reveal">
         <!-- REPLACE: project name -->
         <h3>RFP Project</h3>
@@ -140,8 +170,8 @@
   <section id="contact" class="section">
     <h2 class="reveal">Get In Touch</h2>
 
-    <div class="panel glass reveal">
-      <p>Want to work together or just say hi? Reach out.
+    <div class="reveal">
+      <p class="contact-text">Want to work together or just say hi? Reach out.
         Please...
       </p>
 

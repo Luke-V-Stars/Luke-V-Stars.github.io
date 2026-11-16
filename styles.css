@@ -4,14 +4,14 @@
   ============================================================
   This file controls how your page LOOKS (colors, fonts, spacing).
   index.html controls what your page SAYS (the content).
-  script.js makes sections appear as you scroll.
+  script.js runs the split-flap board and the scroll animations.
 
   Want to change your colors? Edit the values under ":root" below.
   Every color on the page comes from those few lines.
   ============================================================
 */
 
-/* -------- COLOR & FONT SETTINGS (edit these first!) -------- */
+/* -------- COLOR, FONT & SPACING SETTINGS (edit these first!) -------- */
 :root {
   /* The palette */
   --sailor-blue: #204049;
@@ -22,22 +22,31 @@
   --seafoam:     #c7dbc4;
 
   /* What each color is used for */
-  --color-bg:      var(--sailor-blue);  /* page background          */
-  --color-text:    #eef3f0;             /* main text (a light mist) */
-  --color-muted:   var(--mist);         /* softer/secondary text    */
-  --color-accent:  var(--butter);       /* links, buttons, highlights */
-  --color-on-accent: var(--driftwood);  /* text on top of butter    */
+  --color-bg:        var(--sailor-blue);  /* page background            */
+  --color-text:      #eef3f0;             /* main text (a light mist)   */
+  --color-muted:     var(--mist);         /* softer/secondary text      */
+  --color-accent:    var(--butter);       /* links, buttons, highlights */
+  --color-on-accent: var(--driftwood);    /* text on top of butter      */
+  --color-line:      rgba(190, 206, 200, 0.18);  /* thin divider lines  */
 
-  /* The glass effect */
-  --glass-fill:   linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-blur:   18px;                 /* higher = frostier */
-  --glass-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  /* The split-flap board */
+  --flap-tile: #3f5d64;                   /* tile color: Sailor Blue blended with a little Fog */
+  --flap-ink:  var(--butter);             /* letter color */
+
+  /* The glass effect (used on the project cards only) */
+  --glass-fill:   linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-blur:   16px;                   /* higher = frostier */
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 
   --font-heading: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
   --font-main:    'Segoe UI', system-ui, -apple-system, sans-serif;
-  --max-width: 900px;         /* how wide the content gets */
-  --radius: 20px;             /* how round the glass corners are */
+
+  /* Spacing: every part of the page lines up to the same edges */
+  --max-width:     1120px;    /* how wide the content gets            */
+  --gutter:        1.5rem;    /* space at the left and right edges    */
+  --section-space: 4.5rem;    /* space above and below each section   */
+  --radius:        16px;      /* how round the card corners are       */
 }
 
 /* -------- BASE RESETS (leave these alone to start) -------- */
@@ -49,7 +58,6 @@
 
 html {
   scroll-behavior: smooth;     /* nav links glide instead of jumping */
-  scroll-padding-top: 6rem;    /* so headings don't hide under the nav */
 }
 
 body {
@@ -85,9 +93,28 @@ a:focus-visible {
   color: var(--driftwood);
 }
 
+/* Hidden on screen, but still read out by screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* -------- PAGE WIDTH -------- */
+/* The nav, hero, sections and footer all share the same left and right edges */
+.navbar,
+.hero,
+.section,
+.footer {
+  width: min(100% - 2 * var(--gutter), var(--max-width));
+  margin-inline: auto;
+}
+
 /* -------- BACKGROUND GLOW -------- */
-/* Soft blurry color blobs that sit behind everything.
-   They are what the glass panels blur, which makes the glass visible. */
+/* Soft blurry color blobs that sit behind everything. */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -99,7 +126,7 @@ a:focus-visible {
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(80px);
   animation: drift 26s ease-in-out infinite alternate;
 }
 
@@ -107,18 +134,18 @@ a:focus-visible {
   width: min(34rem, 80vw);
   height: min(34rem, 80vw);
   background-color: var(--seafoam);
-  opacity: 0.32;
-  top: -10rem;
-  left: -8rem;
+  opacity: 0.2;
+  top: -12rem;
+  right: -8rem;
 }
 
 .blob-butter {
-  width: min(26rem, 65vw);
-  height: min(26rem, 65vw);
+  width: min(24rem, 60vw);
+  height: min(24rem, 60vw);
   background-color: var(--butter);
-  opacity: 0.28;
-  top: 22%;
-  right: -8rem;
+  opacity: 0.12;
+  top: 45%;
+  left: -10rem;
   animation-duration: 32s;
 }
 
@@ -126,9 +153,9 @@ a:focus-visible {
   width: min(36rem, 85vw);
   height: min(36rem, 85vw);
   background-color: var(--fog);
-  opacity: 0.4;
-  bottom: -12rem;
-  right: 8%;
+  opacity: 0.26;
+  bottom: -14rem;
+  right: 5%;
   animation-duration: 38s;
 }
 
@@ -136,9 +163,9 @@ a:focus-visible {
   width: min(30rem, 75vw);
   height: min(30rem, 75vw);
   background-color: var(--driftwood);
-  opacity: 0.7;
-  bottom: 8%;
-  left: -10rem;
+  opacity: 0.55;
+  bottom: 10%;
+  left: -12rem;
   animation-duration: 30s;
 }
 
@@ -148,44 +175,45 @@ a:focus-visible {
 }
 
 /* -------- GLASS EFFECT -------- */
-/* Add class="glass" to any element to turn it into a frosted panel. */
+/* Add class="glass" to an element to turn it into a frosted panel.
+   Used sparingly: only the project cards have it. */
 .glass {
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   box-shadow: var(--glass-shadow);
 }
 
-/* -------- NAVIGATION BAR -------- */
+/* -------- NAVIGATION -------- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: min(100% - 2rem, var(--max-width));
-  margin: 1rem auto 0;
-  padding: 0.5rem 1.5rem 0.5rem 0.6rem;
-  border-radius: 999px;  /* pill shape */
-  position: sticky;      /* stays at top when you scroll */
-  top: 1rem;
-  z-index: 10;
+  padding-block: 1.75rem;
 }
 
 .nav-logo {
-  display: flex;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
 }
 
-.nav-logo img {
-  display: block;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+.nav-logo:hover {
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.25rem;
 }
 
 .nav-links a {
-  margin-left: 1.5rem;
   color: var(--color-text);
+  font-size: 0.95rem;
   font-weight: 500;
 }
 
@@ -195,42 +223,201 @@ a:focus-visible {
 }
 
 /* -------- HERO / INTRO SECTION -------- */
+/* On phones and tablets the photo sits above your name.
+   On wide screens it moves to the right (see "WIDE SCREENS" near the bottom). */
 .hero {
+  display: grid;
+  gap: 2rem;
+  padding-block: 4.5rem 6rem;
+}
+
+/* -------- HERO PHOTO -------- */
+/* Your photo is the main visual of the page: large, with a butter
+   outline set slightly behind it to draw the eye. */
+.hero-photo {
+  --photo-offset: 0.9rem;        /* how far the butter outline sticks out */
+  position: relative;
+  isolation: isolate;            /* keeps the outline behind the photo only */
+  width: min(100% - var(--photo-offset), 20rem);   /* photo size on phones and tablets */
+  aspect-ratio: 4 / 5;           /* portrait shape: 4 wide by 5 tall */
+  margin-bottom: var(--photo-offset);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* The butter outline, shifted down and to the right */
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--photo-offset), var(--photo-offset));
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  z-index: -1;
+}
+
+/* Your photo fills the frame and is cropped to fit, never stretched */
+.hero-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;   /* keeps your face in view when cropping */
+  border-radius: var(--radius);
+  background-color: var(--flap-tile);  /* hides the placeholder behind see-through images */
+}
+
+/* The "Your photo here" box, covered by the photo once it exists */
+.hero-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 2px dashed var(--fog);
+  border-radius: var(--radius);
+  background-color: var(--flap-tile);
+  color: var(--fog);
+  font-size: 1rem;
   text-align: center;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 7rem 2rem 5rem;
-  animation: hero-in 0.9s ease both;   /* fades in when the page loads */
 }
 
-@keyframes hero-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: none; }
+/* Your name. This is also the size of the big split-flap tiles. */
+.hero-name {
+  font-size: clamp(1.9rem, 10vw, 6rem);
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
 }
 
-.hero h1 {
-  font-size: clamp(2.8rem, 9vw, 5rem);
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-  /* Butter-to-seafoam gradient inside the letters */
-  background: linear-gradient(100deg, var(--butter) 20%, var(--seafoam) 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Who you are. This is also the size of the small split-flap tiles. */
+.hero-role {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1rem, 6vw, 2.25rem);
+  line-height: 1.2;
+  color: var(--seafoam);
+  --flap-ink: var(--seafoam);
+  margin-bottom: 2.5rem;
 }
 
 .tagline {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--color-muted);
-  max-width: 40rem;
-  margin: 0 auto 2.5rem;
+  max-width: 38rem;
+  margin-bottom: 2.25rem;
 }
 
 .hero-buttons {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
+}
+
+/* The photo, text and buttons fade in when the page loads */
+.hero-photo,
+.tagline,
+.hero-buttons {
+  animation: hero-in 0.8s ease 0.3s both;
+}
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* -------- SPLIT-FLAP BOARD -------- */
+/* script.js turns any element with data-flap="..." into a row of tiles.
+   Tile size follows the font-size of that element. */
+.flap-tiles {
+  display: flex;
+  gap: 0.08em;
+}
+
+.flap {
+  position: relative;
+  flex: none;
+  width: 0.86em;
+  height: 1.3em;
+  perspective: 300px;      /* gives the flip its 3D depth */
+}
+
+/* The dark line across the middle of each tile */
+.flap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: max(1px, 0.025em);   /* thin on small tiles, thicker on big ones */
+  transform: translateY(-50%);
+  background-color: var(--sailor-blue);
+  z-index: 3;
+}
+
+/* Each tile is built from halves, and each half shows half a letter */
+.flap-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  background-color: var(--flap-tile);
+  color: var(--flap-ink);
+  backface-visibility: hidden;
+}
+
+.flap-half span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+.flap-top,
+.flap-fold-top {
+  top: 0;
+  border-radius: 0.1em 0.1em 0 0;
+}
+
+.flap-top span,
+.flap-fold-top span {
+  top: 0;
+}
+
+.flap-bottom,
+.flap-fold-bottom {
+  bottom: 0;
+  border-radius: 0 0 0.1em 0.1em;
+  /* a soft shadow under the middle line */
+  background-image: linear-gradient(rgba(32, 64, 73, 0.4), rgba(32, 64, 73, 0) 60%);
+}
+
+.flap-bottom span,
+.flap-fold-bottom span {
+  bottom: 0;
+}
+
+/* The two moving pieces rest edge-on (invisible) until script.js flips them */
+.flap-fold {
+  z-index: 2;
+}
+
+.flap-fold-top {
+  transform-origin: bottom;
+  transform: rotateX(-90deg);
+}
+
+.flap-fold-bottom {
+  transform-origin: top;
+  transform: rotateX(90deg);
 }
 
 /* -------- BUTTONS -------- */
@@ -238,59 +425,67 @@ a:focus-visible {
   display: inline-block;
   background-color: var(--color-accent);
   color: var(--color-on-accent);
-  padding: 0.8rem 1.7rem;
+  border: 1.5px solid var(--color-accent);
+  padding: 0.75rem 1.7rem;
   border-radius: 999px;
   font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .button:hover {
   text-decoration: none;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(248, 224, 177, 0.3);
+  box-shadow: 0 8px 24px rgba(248, 224, 177, 0.25);
 }
 
-/* The see-through second button */
-.button-glass {
+/* The second button: just an outline */
+.button-outline {
   background-color: transparent;
   color: var(--color-text);
+  border-color: var(--fog);
 }
 
-.button-glass:hover {
-  box-shadow: var(--glass-shadow);
+.button-outline:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: none;
 }
 
 /* -------- GENERAL SECTIONS -------- */
 .section {
-  max-width: var(--max-width);
-  margin: 0 auto;          /* centers the section */
-  padding: 3rem 2rem;
+  padding-block: var(--section-space);
+  border-top: 1px solid var(--color-line);
+  scroll-margin-top: 0;
 }
 
 .section h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  margin-bottom: 2.25rem;
 }
 
 /* Small butter bar under each section title */
 .section h2::after {
   content: "";
   display: block;
-  width: 3rem;
-  height: 4px;
-  margin-top: 0.6rem;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: 0.75rem;
   border-radius: 2px;
   background-color: var(--color-accent);
 }
 
 .section h3 {
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.9rem;
 }
 
-/* A glass box that holds a block of content */
-.panel {
-  padding: 2rem;
+/* -------- ABOUT -------- */
+/* Two columns: your story on the left, skills on the right */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: start;
 }
 
 /* -------- SKILLS LIST -------- */
@@ -302,10 +497,9 @@ a:focus-visible {
 }
 
 .skills-list li {
-  background-color: rgba(199, 219, 196, 0.16);   /* seafoam tint */
-  border: 1px solid rgba(199, 219, 196, 0.4);
+  border: 1px solid rgba(199, 219, 196, 0.45);
   color: var(--seafoam);
-  padding: 0.35rem 1rem;
+  padding: 0.3rem 0.95rem;
   border-radius: 999px;
   font-size: 0.9rem;
 }
@@ -313,8 +507,8 @@ a:focus-visible {
 /* -------- PROJECT CARDS -------- */
 .project-grid {
   display: grid;
-  /* Auto-fits as many cards per row as will fit, min 250px wide */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Auto-fits as many cards per row as will fit, min 260px wide */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
@@ -332,7 +526,6 @@ a:focus-visible {
 }
 
 .project-card h3 {
-  margin-top: 0;
   color: var(--color-accent);
 }
 
@@ -343,47 +536,50 @@ a:focus-visible {
 .project-link {
   display: inline-block;
   margin-top: auto;        /* pushes the link to the bottom of the card */
-  padding-top: 1.25rem;
+  padding-top: 1.5rem;
   font-weight: 600;
 }
 
 .project-link::after {
-  content: " \2192";       /* a little arrow → */
+  content: " \2192";       /* a little arrow */
 }
 
-/* -------- CONTACT LIST -------- */
+/* -------- CONTACT -------- */
+.contact-text {
+  max-width: 38rem;
+  color: var(--color-muted);
+  font-size: 1.1rem;
+}
+
 .contact-list {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 .contact-list a {
   display: inline-block;
   padding: 0.6rem 1.5rem;
-  border: 1px solid var(--glass-border);
+  border: 1.5px solid var(--fog);
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.08);
   font-weight: 600;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .contact-list a:hover {
   background-color: var(--color-accent);
+  border-color: var(--color-accent);
   color: var(--color-on-accent);
   text-decoration: none;
-  transform: translateY(-2px);
 }
 
 /* -------- FOOTER -------- */
 .footer {
-  text-align: center;
-  padding: 2rem;
+  padding-block: 2rem;
   color: var(--color-muted);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  margin-top: 3rem;
+  border-top: 1px solid var(--color-line);
   font-size: 0.9rem;
 }
 
@@ -408,28 +604,70 @@ a:focus-visible {
     scroll-behavior: auto;
   }
   .blob,
-  .hero {
+  .hero-photo,
+  .tagline,
+  .hero-buttons {
     animation: none;
   }
 }
 
-/* -------- MOBILE FRIENDLY -------- */
-/* When the screen is narrow (phones), tighten things up */
-@media (max-width: 600px) {
-  .navbar {
-    padding-right: 1.1rem;
+/* -------- WIDE SCREENS -------- */
+/* Laptops and desktops: your name on the left, your photo on the right */
+@media (min-width: 900px) {
+  .hero {
+    /* The second number is the photo's width: it grows with the screen, up to 26rem */
+    grid-template-columns: minmax(0, 1fr) clamp(18rem, 36vw, 26rem);
+    gap: 3.5rem;
+    align-items: center;
   }
-  .nav-links a {
-    margin-left: 0.9rem;
-    font-size: 0.95rem;
+  .hero-text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .hero-photo {
+    grid-column: 2;
+    grid-row: 1;
+    width: calc(100% - var(--photo-offset));
+    margin-bottom: 0;
+  }
+  /* The name tiles are a little smaller here to leave room for the photo */
+  .hero-name {
+    font-size: clamp(3rem, 5.8vw, 4.4rem);
+  }
+  .hero-role {
+    font-size: clamp(1.75rem, 3.4vw, 2.25rem);
+  }
+  .hero-photo-placeholder {
+    font-size: 1.1rem;
+  }
+}
+
+/* -------- TABLETS & PHONES -------- */
+@media (max-width: 760px) {
+  :root {
+    --section-space: 3.25rem;
   }
   .hero {
-    padding: 4.5rem 1.25rem 3rem;
+    padding-block: 2.5rem 4rem;
   }
-  .section {
-    padding: 2.5rem 1.25rem;
+  .hero-role {
+    margin-bottom: 2rem;
   }
-  .panel {
-    padding: 1.5rem;
+  /* About stacks into one column */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --gutter: 1.25rem;
+  }
+  .navbar {
+    padding-block: 1.25rem;
+  }
+  .nav-links {
+    gap: 1.25rem;
   }
 }
