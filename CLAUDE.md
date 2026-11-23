@@ -25,7 +25,7 @@ Claude Code reads it automatically at the start of each session, so decisions an
 - **Dark theme** with soft blurred color blobs (`.backdrop`) in the background.
 - **Glass is used sparingly:** only the project cards have `class="glass"`. Luke found glass on the nav, About and Contact panels to be too much (2026-11-15). Don't add more without asking.
 - **Nav:** plain, no bar, no background, not sticky. Text "LV" logo on the left. Luke disliked the pill-shaped bar and the favicon shown in a circle.
-- **Hero:** left-aligned split-flap board. Tiles are a soft teal (`--flap-tile: #3f5d64`, Sailor Blue blended with Fog) so they blend with the page; Luke rejected dark Driftwood tiles as too contrasting (2026-11-15). Row 1 is the name in butter letters; row 2 rotates "who I am" phrases in seafoam letters. Set through `data-flap="A|B|C"` in `index.html`; keep phrases to about 15 characters.
+- **Hero:** left-aligned split-flap board. Tiles are a soft teal (`--flap-tile: #3f5d64`, Sailor Blue blended with Fog) so they blend with the page; Luke rejected dark Driftwood tiles as too contrasting (2026-11-15). Row 1 is the name in butter letters; row 2 rotates "who I am" phrases in seafoam letters. Set through `data-flap="A|B|C"` in `index.html`; keep phrases to about 15 characters. The board always has exactly as many tiles as the current phrase (no blank padding tiles): on a shorter phrase the extra tiles flip blank, then shrink away; on a longer one new tiles grow in blank, then flip (Luke picked this "smooth slide" on 2026-11-23). Tile spacing is a `.flap + .flap` margin, not a flex `gap`, so it can shrink with the tile.
 - **Hero photo:** `.hero-photo` frame (portrait 4:5, rounded) loads `images/profile.jpg`. Until that file exists, a dashed "Your photo here" placeholder shows (the `<img>` removes itself on error). On screens 900px and wider it sits to the right of the board; below that it sits above the name. The photo is deliberately the dominant visual (Luke: "the person behind all of the work"): up to about 400px wide on desktop, about 320px on phones, with a butter outline offset behind it. Don't shrink it. `--max-width` was raised from 960px to 1120px to make room.
 - **Layout:** nav, hero, sections and footer share one left/right edge (`--max-width` 1120px, `--gutter`). Sections are separated by a hairline and `--section-space`. About is two columns (story left, skills right), stacking on phones.
 - **Headings:** Space Grotesk (Google Fonts). Body: system font.
@@ -45,7 +45,7 @@ Claude Code reads it automatically at the start of each session, so decisions an
 - [ ] **Add the profile photo** at `images/profile.jpg` before publishing; otherwise visitors see the "Your photo here" placeholder.
 - [ ] Project links still point to the placeholder `[https://github.com/yourusername/project]`.
 - [x] Contact links (Email, GitHub, LinkedIn) fixed — 2026-11-15.
-- [x] Typos fixed — 2026-11-15: "involes", "others' skills", "SMP 400" → "S&P 400" (assumed; confirm with Luke), "Service Now" → "ServiceNow", "3d" → "3D".
+- [x] Typos fixed — 2026-11-15: "involes", "others' skills", "SMP 400" → "Fortune 500" (Luke confirmed 2026-11-23; S&P 400 was a wrong guess), "Service Now" → "ServiceNow", "3d" → "3D".
 - [ ] Contact blurb ends with "Please..." — replace with a real call to action.
 - [ ] The About paragraph is long; split it into 2–3 shorter paragraphs or a short intro plus bullets.
 
@@ -79,7 +79,8 @@ Ideas are ranked by impact relative to effort. Mark them `[x]` when done and not
 
 Add newest entries at the top. Format: `YYYY-MM-DD — topic — decision / next step`.
 
-- **2026-11-23** — Rewrote `README.md` from the generic starter template into a project README: live link, site sections, features, file table, customizing (flap phrases, photo, palette), deploy steps, repo habits, and a to-do list mirroring the known issues. No em dashes. Not committed yet.
+- **2026-11-23** — Split-flap role row no longer pads shorter phrases with blank tiles ("AI Power User" had 2 extras, "Team Leader" 4). Tile count now follows each phrase, with tiles sliding in/out. Verified in headless Chrome at 1280 and 390px: 15 → 13 → 11 → 13 tiles, smooth resize, no layout jump, no errors. Committed and pushed.
+- **2026-11-23** — Rewrote `README.md` from the generic starter template into a project README: live link, site sections, features, file table, customizing (flap phrases, photo, palette), deploy steps, repo habits, and a to-do list mirroring the known issues. No em dashes. Committed by Luke.
 
 - **2026-11-15** — Made the hero photo the dominant visual: about 45% larger on desktop, twice as large on phones, butter outline behind it, page widened to 1120px. Verified at 1440, 1280, 900, 899, 390 and 320px. Not committed yet.
 - **2026-11-15** — Split-flap tiles changed from Driftwood to soft teal. Added a hero photo area with a placeholder (waiting on Luke's photo at `images/profile.jpg`); name tiles shrink slightly on wide screens to make room. Verified at 1280, 900, 899, 390 and 320px. Not committed yet.
