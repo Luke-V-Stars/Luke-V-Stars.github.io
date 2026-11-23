@@ -1,36 +1,71 @@
-# Portfolio Starter Template
+# Luke Vang | Portfolio
 
-A simple, editable personal portfolio built with plain HTML and CSS, ready to host for free on GitHub Pages.
+My personal portfolio site, built with plain HTML, CSS, and a little vanilla JavaScript, and hosted on GitHub Pages.
+
+**Live site:** [luke-v-stars.github.io](https://luke-v-stars.github.io)
+
+## What's on the site
+- **Hero:** a split-flap board (like an airport departure sign) that spells out my name and flips through roles: Tech Enthusiast, AI Power User, Team Leader, Web Developer.
+- **About:** my background, plus a list of skills.
+- **Projects:** RFP Project (ServiceNow ticket analysis for an S&P 400 company), Spotify Playlist 3D Simulation (Three.js), and an NFL & NBA Game Simulator.
+- **Contact:** links to email, GitHub, and LinkedIn.
+
+## Features
+- Dark "Sailor Blue" theme with soft, blurred color glows in the background
+- Frosted-glass project cards with a hover lift
+- Split-flap animation on load and fade-in sections as you scroll
+- Responsive layout that works from phones up to wide desktop screens
+- All motion turns off for visitors who have "reduce motion" turned on
+- The page still works if JavaScript is off: the text just shows without the animation
+- No frameworks and no build step
 
 ## Files
-- `index.html` — your page content (what it says)
-- `styles.css` — your page styling (how it looks)
-- `README.md` — this file
+| File | What it does |
+| --- | --- |
+| `index.html` | Page content: nav, hero, about, projects, contact, footer |
+| `styles.css` | All styling. Colors and fonts are the `:root` variables at the top |
+| `script.js` | The split-flap board and the scroll-reveal animation |
+| `favicon.svg` | The "LV" icon in the browser tab |
+| `images/` | Holds the profile photo (`profile.jpg`) |
 
-## Step 1 — Make it yours (edit on your computer)
-1. Open `index.html` in a text editor (VS Code).
-2. Find every `[SQUARE BRACKET]` placeholder and replace it with your info. Tip: search the file for `REPLACE`.
-3. Open `index.html` in your browser to preview. Edit → save → refresh to see changes.
-4. Want different colors? Open `styles.css` and change the values under `:root` at the top.
+## Run it locally
+No install needed. Open `index.html` in a browser. Edit, save, and refresh to see changes.
 
-## Step 2 — Put it on GitHub
-1. Go to github.com and click **New repository**.
-2. Name it **`your-username.github.io`** (use YOUR GitHub username exactly). This special name makes it your main site.
-3. Set it to **Public**. Click **Create repository**.
-4. On the new repo page, click **uploading an existing file**.
-5. Drag in `index.html` and `styles.css`, then write a commit message like `Add portfolio starter files` and click **Commit changes**.
+## Customizing
+- **Text:** edit `index.html`. Search for `REPLACE` to find every editable spot.
+- **Split-flap phrases:** change the `data-flap` attribute, with phrases separated by `|`:
+  ```html
+  <p class="hero-role" data-flap="Tech Enthusiast|AI Power User|Team Leader">Tech Enthusiast</p>
+  ```
+  Keep each phrase to about 15 characters so it fits on a phone.
+- **Profile photo:** save a portrait photo as `images/profile.jpg`. It replaces the "Your photo here" placeholder automatically.
+- **Colors:** change the variables under `:root` at the top of `styles.css`.
 
-## Step 3 — Turn on GitHub Pages
-1. In your repo, go to **Settings** → **Pages** (left sidebar).
-2. Under **Branch**, select **`main`** and the **`/ (root)`** folder. Click **Save**.
-3. Wait 1–2 minutes, then visit **`https://your-username.github.io`**. Your site is live!
+| Color | Hex | Used for |
+| --- | --- | --- |
+| Sailor Blue | `#204049` | Page background |
+| Butter | `#f8e0b1` | Links, buttons, card titles |
+| Mist | `#becec8` | Muted text |
+| Seafoam | `#c7dbc4` | Glows, skill chips |
+| Fog | `#90a6a9` | Glows |
+| Driftwood | `#422c1d` | Text on butter, background glow |
 
-## Always-on habits (graded)
-- Write clear commit messages that say what changed (`Update about section`, not `stuff`).
+## Deploying
+The site is served by GitHub Pages from the `main` branch (`/ (root)` folder). To publish changes:
+```bash
+git add .
+git commit -m "Describe what changed"
+git push
+```
+The live site updates within 1 to 2 minutes. If you don't see the change, hard-refresh with Ctrl+Shift+R (Cmd+Shift+R on a Mac).
+
+## Habits for this repo
+- Write commit messages that say what changed (`Update about section`, not `stuff`).
 - Keep filenames lowercase with no spaces (`styles.css`, not `My Styles.css`).
-- Commit often — small, frequent commits beat one giant one.
+- Commit often: small, frequent commits beat one giant one.
 
-## Troubleshooting
-- **Page is blank / unstyled:** check that `styles.css` is spelled exactly right in the `<link>` tag and uploaded to the repo.
-- **404 error:** make sure the repo is named `your-username.github.io` and is Public, and give it 2 minutes.
-- **Changes not showing:** hard-refresh your browser (Ctrl+Shift+R / Cmd+Shift+R).
+## To do
+- [ ] Add a profile photo at `images/profile.jpg`
+- [ ] Link each project card to its real repo or demo
+- [ ] Finish the call to action in the Contact section
+- [ ] Split the About paragraph into shorter paragraphs

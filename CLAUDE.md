@@ -79,6 +79,8 @@ Ideas are ranked by impact relative to effort. Mark them `[x]` when done and not
 
 Add newest entries at the top. Format: `YYYY-MM-DD — topic — decision / next step`.
 
+- **2026-11-23** — Rewrote `README.md` from the generic starter template into a project README: live link, site sections, features, file table, customizing (flap phrases, photo, palette), deploy steps, repo habits, and a to-do list mirroring the known issues. No em dashes. Not committed yet.
+
 - **2026-11-15** — Made the hero photo the dominant visual: about 45% larger on desktop, twice as large on phones, butter outline behind it, page widened to 1120px. Verified at 1440, 1280, 900, 899, 390 and 320px. Not committed yet.
 - **2026-11-15** — Split-flap tiles changed from Driftwood to soft teal. Added a hero photo area with a placeholder (waiting on Luke's photo at `images/profile.jpg`); name tiles shrink slightly on wide screens to make room. Verified at 1280, 900, 899, 390 and 320px. Not committed yet.
 - **2026-11-15** — Second design pass after Luke's feedback: removed the glass nav bar and circled favicon, cut glass back to the project cards only, added the split-flap hero (name plus rotating roles: Tech Enthusiast, AI Power User, Team Leader, Web Developer; Claude picked these from the About text, Luke to confirm), and rebuilt spacing on one shared grid. Also fixed typos and removed em dashes from site files. Verified in a real-time headless browser run at 1280px, 390px and 320px. Not committed yet.
