@@ -34,7 +34,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
   const STAGGER_MS = 30;    // delay before each next tile starts
   const HOLD_MS = 3200;     // how long a phrase stays before the next one
   const ROW_DELAY_MS = 500; // each row starts this much later than the one above
-  const RESIZE_MS = 280;    // how long a tile takes to grow in or shrink away
+  const IN_OUT_MS = FLIP_MS; // how long a tile takes to flip in or out (raise to slow it down)
 
   const canAnimate = !reduceMotion && 'animate' in Element.prototype;
 
@@ -118,19 +118,65 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
     }
   }
 
-  // Grow a new tile in from nothing, or shrink an old one away to nothing.
-  // The full size is read from styles.css, so it always matches the other tiles.
-  function resizeTile(tile, grow) {
+  // Turn one half of a tile from one angle to another, then resolve
+  function turn(half, fromDeg, toDeg, easing) {
     return new Promise(function (resolve) {
-      const style = getComputedStyle(tile.el);
-      const full = { width: style.width, marginLeft: style.marginLeft };
-      const none = { width: '0px', marginLeft: '0px' };
-      const anim = tile.el.animate(grow ? [none, full] : [full, none], {
-        duration: RESIZE_MS,
-        easing: 'ease-in-out'
-      });
-      anim.onfinish = resolve;
+      const anim = half.animate(
+        [{ transform: 'rotateX(' + fromDeg + 'deg)' }, { transform: 'rotateX(' + toDeg + 'deg)' }],
+        { duration: IN_OUT_MS / 2, easing: easing, fill: 'forwards' }
+      );
+      anim.onfinish = function () { resolve(anim); };
     });
+  }
+
+  // Show or hide one still half of a tile (the fold pieces do the moving)
+  function setShown(half, shown) {
+    half.style.visibility = shown ? '' : 'hidden';
+  }
+
+  // A brand-new, empty tile: nothing shows until it flips in
+  function makeEmptyTile() {
+    const tile = makeTile(' ');
+    tile.char = null;
+    setShown(tile.top, false);
+    setShown(tile.bottom, false);
+    tile.el.classList.add('no-line');
+    return tile;
+  }
+
+  // Flip an empty tile into view as a blank tile:
+  // the top half swings up out of the middle line, then the bottom half swings down.
+  async function flipIn(tile, delay) {
+    await wait(delay);
+
+    const rise = await turn(tile.foldTop, -90, 0, 'ease-out');
+    setShown(tile.top, true);
+    tile.el.classList.remove('no-line');
+    rise.cancel();
+
+    const land = await turn(tile.foldBottom, 90, 0, 'ease-out');
+    setShown(tile.bottom, true);
+    land.cancel();
+
+    tile.char = ' ';
+  }
+
+  // Flip a tile out of view, then remove it:
+  // the top half falls into the middle line (like a normal flip),
+  // then the bottom half folds up after it.
+  async function flipOut(tile, delay) {
+    await wait(delay);
+    setChar(tile.foldTop, tile.char);
+    setChar(tile.foldBottom, tile.char);
+
+    setShown(tile.top, false);
+    await turn(tile.foldTop, 0, -90, 'ease-in');
+
+    setShown(tile.bottom, false);
+    tile.el.classList.add('no-line');
+    await turn(tile.foldBottom, 0, 90, 'ease-in');
+
+    tile.el.remove();
   }
 
   rows.forEach(function (row, rowIndex) {
@@ -167,27 +213,31 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 
     if (!canAnimate) return;
 
-    async function show(text) {
-      // Longer phrase: new blank tiles grow in on the right first
-      const added = [];
+    // Change the board to a new phrase in one left-to-right wave.
+    // Each tile starts a little after the one before it (STAGGER_MS).
+    function show(text) {
+      const oldCount = tiles.length;
+
+      // Shorter phrase: the extra tiles on the right flip out
+      const leaving = tiles.splice(text.length).map(function (tile, j) {
+        return flipOut(tile, (text.length + j) * STAGGER_MS);
+      });
+
+      // Longer phrase: empty tiles are added on the right, ready to flip in
       while (tiles.length < text.length) {
-        const tile = makeTile(' ');
+        const tile = makeEmptyTile();
         board.appendChild(tile.el);
         tiles.push(tile);
-        added.push(resizeTile(tile, true));
       }
-      await Promise.all(added);
 
-      // Flip every tile to its letter. Tiles past the end of the phrase flip to blank.
-      await Promise.all(tiles.map(function (tile, i) {
-        return spinTo(tile, text[i] || ' ', i * STAGGER_MS);
-      }));
+      const changing = tiles.map(function (tile, i) {
+        const delay = i * STAGGER_MS;
+        if (i < oldCount) return spinTo(tile, text[i], delay);
+        // A new tile flips in blank, then flips to its letter like the others
+        return flipIn(tile, delay).then(function () { return spinTo(tile, text[i], 0); });
+      });
 
-      // Shorter phrase: the now-blank extra tiles shrink away
-      const extra = tiles.splice(text.length);
-      await Promise.all(extra.map(function (tile) {
-        return resizeTile(tile, false).then(function () { tile.el.remove(); });
-      }));
+      return Promise.all(changing.concat(leaving));
     }
 
     (async function run() {
