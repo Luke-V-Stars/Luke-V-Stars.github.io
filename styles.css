@@ -333,7 +333,12 @@ a:focus-visible {
    Tile size follows the font-size of that element. */
 .flap-tiles {
   display: flex;
-  gap: 0.08em;
+}
+
+/* Space between tiles. A margin (not a gap) so it can shrink away
+   along with a tile when the board needs fewer tiles. */
+.flap + .flap {
+  margin-left: 0.08em;
 }
 
 .flap {

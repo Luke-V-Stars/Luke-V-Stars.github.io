@@ -34,6 +34,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
   const STAGGER_MS = 30;    // delay before each next tile starts
   const HOLD_MS = 3200;     // how long a phrase stays before the next one
   const ROW_DELAY_MS = 500; // each row starts this much later than the one above
+  const RESIZE_MS = 280;    // how long a tile takes to grow in or shrink away
 
   const canAnimate = !reduceMotion && 'animate' in Element.prototype;
 
@@ -117,6 +118,21 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
     }
   }
 
+  // Grow a new tile in from nothing, or shrink an old one away to nothing.
+  // The full size is read from styles.css, so it always matches the other tiles.
+  function resizeTile(tile, grow) {
+    return new Promise(function (resolve) {
+      const style = getComputedStyle(tile.el);
+      const full = { width: style.width, marginLeft: style.marginLeft };
+      const none = { width: '0px', marginLeft: '0px' };
+      const anim = tile.el.animate(grow ? [none, full] : [full, none], {
+        duration: RESIZE_MS,
+        easing: 'ease-in-out'
+      });
+      anim.onfinish = resolve;
+    });
+  }
+
   rows.forEach(function (row, rowIndex) {
     const phrases = row.dataset.flap
       .split('|')
@@ -124,8 +140,8 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
       .filter(Boolean);
     if (!phrases.length) return;
 
-    const length = Math.max.apply(null, phrases.map(function (p) { return p.length; }));
-    const padded = phrases.map(function (p) { return p.toUpperCase().padEnd(length, ' '); });
+    // The board always has exactly as many tiles as the phrase it shows
+    const texts = phrases.map(function (p) { return p.toUpperCase(); });
 
     // Screen readers get the plain text; the tiles are decoration.
     const label = document.createElement('span');
@@ -139,8 +155,8 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
     // Tiles start blank and flip to the text. With animation turned off,
     // they simply start on the first phrase.
     const tiles = [];
-    for (let i = 0; i < length; i++) {
-      const tile = makeTile(canAnimate ? ' ' : padded[0][i]);
+    for (let i = 0; i < texts[0].length; i++) {
+      const tile = makeTile(canAnimate ? ' ' : texts[0][i]);
       tiles.push(tile);
       board.appendChild(tile.el);
     }
@@ -151,22 +167,39 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 
     if (!canAnimate) return;
 
-    function show(text) {
-      return Promise.all(tiles.map(function (tile, i) {
-        return spinTo(tile, text[i], i * STAGGER_MS);
+    async function show(text) {
+      // Longer phrase: new blank tiles grow in on the right first
+      const added = [];
+      while (tiles.length < text.length) {
+        const tile = makeTile(' ');
+        board.appendChild(tile.el);
+        tiles.push(tile);
+        added.push(resizeTile(tile, true));
+      }
+      await Promise.all(added);
+
+      // Flip every tile to its letter. Tiles past the end of the phrase flip to blank.
+      await Promise.all(tiles.map(function (tile, i) {
+        return spinTo(tile, text[i] || ' ', i * STAGGER_MS);
+      }));
+
+      // Shorter phrase: the now-blank extra tiles shrink away
+      const extra = tiles.splice(text.length);
+      await Promise.all(extra.map(function (tile) {
+        return resizeTile(tile, false).then(function () { tile.el.remove(); });
       }));
     }
 
     (async function run() {
       await wait(rowIndex * ROW_DELAY_MS);
-      await show(padded[0]);
+      await show(texts[0]);
 
       let index = 0;
-      while (padded.length > 1) {
+      while (texts.length > 1) {
         await wait(HOLD_MS);
         if (document.hidden) continue; // don't flip while the tab is in the background
-        index = (index + 1) % padded.length;
-        await show(padded[index]);
+        index = (index + 1) % texts.length;
+        await show(texts[index]);
       }
     })();
   });
