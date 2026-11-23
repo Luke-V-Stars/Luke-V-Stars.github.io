@@ -50,19 +50,8 @@ No install needed. Open `index.html` in a browser. Edit, save, and refresh to se
 | Fog | `#90a6a9` | Glows |
 | Driftwood | `#422c1d` | Text on butter, background glow |
 
-## Deploying
-The site is served by GitHub Pages from the `main` branch (`/ (root)` folder). To publish changes:
-```bash
-git add .
-git commit -m "Describe what changed"
-git push
 ```
 The live site updates within 1 to 2 minutes. If you don't see the change, hard-refresh with Ctrl+Shift+R (Cmd+Shift+R on a Mac).
-
-## Habits for this repo
-- Write commit messages that say what changed (`Update about section`, not `stuff`).
-- Keep filenames lowercase with no spaces (`styles.css`, not `My Styles.css`).
-- Commit often: small, frequent commits beat one giant one.
 
 ## To do
 - [ ] Add a profile photo at `images/profile.jpg`
