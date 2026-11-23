@@ -7,7 +7,7 @@ My personal portfolio site, built with plain HTML, CSS, and a little vanilla Jav
 ## What's on the site
 - **Hero:** a split-flap board (like an airport departure sign) that spells out my name and flips through roles: Tech Enthusiast, AI Power User, Team Leader, Web Developer.
 - **About:** my background, plus a list of skills.
-- **Projects:** RFP Project (ServiceNow ticket analysis for an S&P 400 company), Spotify Playlist 3D Simulation (Three.js), and an NFL & NBA Game Simulator.
+- **Projects:** RFP Project (ServiceNow ticket analysis for an Fortune 500 company), Spotify Playlist 3D Simulation (Three.js), and an NFL & NBA Game Simulator.
 - **Contact:** links to email, GitHub, and LinkedIn.
 
 ## Features
