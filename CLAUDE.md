@@ -43,7 +43,7 @@ Claude Code reads it automatically at the start of each session, so decisions an
 ## Known issues to fix
 
 - [ ] **Add the profile photo** at `images/profile.jpg` before publishing; otherwise visitors see the "Your photo here" placeholder.
-- [ ] Project links still point to the placeholder `[https://github.com/yourusername/project]`.
+- [ ] Project links: RFP Project links to https://onetouch.fyi (2026-11-23). Spotify 3D and NFL & NBA cards still point to the placeholder `[https://github.com/yourusername/project]`.
 - [x] Contact links (Email, GitHub, LinkedIn) fixed — 2026-11-15.
 - [x] Typos fixed — 2026-11-15: "involes", "others' skills", "SMP 400" → "Fortune 500" (Luke confirmed 2026-11-23; S&P 400 was a wrong guess), "Service Now" → "ServiceNow", "3d" → "3D".
 - [ ] Contact blurb ends with "Please..." — replace with a real call to action.
